@@ -1,0 +1,38 @@
+#!/bin/sh
+
+set -e
+
+adduser --quiet --system --group --home $SNAP_DATA/opt/lool lool && usermod -d $SNAP_DATA/opt/lool lool
+mkdir -p $SNAP_COMMON/cache/ && chown lool: $SNAP_COMMON/cache/
+rm -rf $SNAP_COMMON/cache/*
+mkdir -p $SNAP_DATA/log/ && chown lool: $SNAP_DATA/log/
+
+# We assume that the LibreOffice to be used is built TDF-style
+# and installs in $SNAP/opt/collaboraoffice5.1, and that /opt/lool is
+# on the same file system
+
+rm -rf $SNAP_DATA/opt/lool
+mkdir -p $SNAP_DATA/opt/lool/child-roots
+chown lool: $SNAP_DATA/opt/lool
+chown lool: $SNAP_DATA/opt/lool/child-roots
+
+# install config and data files (temporarily system-wide)
+
+mkdir -p $SNAP_DATA/etc/ $SNAP_DATA/usr/share
+test -d $SNAP_DATA/etc/loolwsd || cp -r -p $SNAP/etc/loolwsd $SNAP_DATA/etc
+test -d $SNAP_DATA/usr/share/loolwsd || cp -r -p $SNAP/usr/share/loolwsd $SNAP_DATA/usr/share
+
+# set tile cache and log data paths and disable SSL in loolwsd config file
+
+sed -i "/tile_cache_path/s#><#>$SNAP_COMMON/cache<#;/loolwsd.log/s#/var.*loolwsd.log#$SNAP_DATA/log/loolwsd.log#;/<ssl/!b;n;s/>\(true\)\?</>false</" $SNAP_DATA/etc/loolwsd/loolwsd.xml
+
+# install CollaboraOffice to use fast hard linking for forking a kit process
+
+rm -rf $SNAP_DATA/opt/collaboraoffice5.1
+cp -r -p -L $SNAP/opt/collaboraoffice5.1 $SNAP_DATA/opt || true
+
+su lool --shell=/bin/sh -c "$SNAP/bin/loolwsd-systemplate-set $SNAP_DATA/opt/lool/systemplate $SNAP_DATA/opt/collaboraoffice5.1 >/dev/null 2>&1"
+
+su lool --shell=/bin/sh -c "LD_LIBRARY_PATH=$SNAP/usr/lib $SNAP/usr/bin/loolwsd --o:sys_template_path=$SNAP_DATA/opt/lool/systemplate --o:lo_template_path=$SNAP_DATA/opt/collaboraoffice5.1 --o:child_root_path=$SNAP_DATA/opt/lool/child-roots --o:file_server_root_path=$SNAP/usr/share/loolwsd --config-file=$SNAP_DATA/etc/loolwsd/loolwsd.xml"
+
+
