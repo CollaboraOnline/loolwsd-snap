@@ -1,0 +1,39 @@
+name: loolwsd
+version: '2.0.2'
+summary: LibreOffice On-Line WebSocket Daemon
+description: |
+  LOOLWSD is a daemon that talks to web browser clients and provides LibreOffice
+  services.
+
+grade: devel # must be 'stable' to release into candidate/stable channels
+confinement: classic # use 'strict' once you have the right plugs and slots
+
+parts:
+  poco:
+    plugin: autotools
+    source: https://github.com/pocoproject/poco
+    source-type: git
+    source-branch: develop
+    install-via: prefix
+    configflags:
+      - --no-tests
+      - --no-samples
+      - --no-prefix
+    build-packages:
+      - libpq-dev
+
+  officeonline:
+    plugin: autotools
+    source: git://anongit.freedesktop.org/libreoffice/online
+    source-type: git
+    source-branch: distro/collabora/collabora-online-2-0
+    configflags:
+      - --with-lokit-path=bundled/include
+      - --with-poco-includes=$SNAPCRAFT_STAGE/include
+    build-packages:
+      - libpng12-dev
+      - libcap-dev
+      - libcppunit-dev
+    stage-packages:
+      - libcppunit-1.13-0v5
+    after: [poco]
