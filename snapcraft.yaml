@@ -8,6 +8,20 @@ description: |
 grade: devel # must be 'stable' to release into candidate/stable channels
 confinement: classic # use 'strict' once you have the right plugs and slots
 
+apps:
+  
+  loolwsd:
+    command: loolwsd-start
+    # stop-command: killall -g loolwsd
+    # restart-condition: always
+    # daemon: simple
+
+  flush-cache:
+    command: loolwsd-cache-flush
+    stop-command: killall loolwsd-service
+    restart-condition: always
+    daemon: simple
+
 parts:
   poco:
     plugin: autotools
@@ -22,7 +36,7 @@ parts:
     build-packages:
       - libpq-dev
 
-  officeonline:
+  loolwsd:
     plugin: autotools_and_patch
     source: git://anongit.freedesktop.org/libreoffice/online
     source-type: git
@@ -37,4 +51,28 @@ parts:
       - libcppunit-dev
     stage-packages:
       - libcppunit-1.13-0v5
+    organize:
+      loafleaf/dist: usr/share/loafleaf/dist
     after: [poco]
+
+  loolwsd-customizations:
+    plugin: dump
+    source: src/loolwsd
+    stage:
+      - -patch
+
+  dependencies:
+    plugin: repository
+    stage-packages:
+      - collaboraoffice5.1
+      - collaboraoffice5.1-ure
+      - collaboraofficebasis5.1-calc
+      - collaboraofficebasis5.1-core
+      - collaboraofficebasis5.1-en-us
+      - collaboraofficebasis5.1-en-us-calc
+      - collaboraofficebasis5.1-en-us-res
+      - collaboraofficebasis5.1-graphicfilter
+      - collaboraofficebasis5.1-images
+      - collaboraofficebasis5.1-impress
+      - collaboraofficebasis5.1-writer
+      - code-brand
