@@ -59,8 +59,8 @@ find $SNAP/lib/ld-* $SNAP/lib64/ld-* \
      $SNAP/usr/lib/locale/en_US.utf8 \
      $SNAP/usr/lib/locale/C.UTF-8 \
      $SNAP/usr/lib/locale/locale_archive \
-     $SNAP/share/zoneinfo/* \
-     $SNAP/share/liblangtag \
+     $SNAP/usr/share/zoneinfo/* \
+     $SNAP/usr/share/liblangtag \
      $SNAP/usr/lib/libpng* $SNAP/usr/lib64/libpng* \
 	 -type f
 

@@ -28,32 +28,48 @@ parts:
     source: https://github.com/pocoproject/poco
     source-type: git
     source-branch: develop
-    install-via: prefix
     configflags:
       - --no-tests
       - --no-samples
       - --no-prefix
     build-packages:
       - libpq-dev
+    organize:
+      lib: usr/lib
+    prime:
+      - usr
 
   loolwsd:
-    plugin: autotools_and_patch
+    plugin: loolwsd
     source: git://anongit.freedesktop.org/libreoffice/online
     source-type: git
     source-branch: distro/collabora/collabora-online-2-0
+    install-via: prefix
     patches: src/loolwsd/patch
     configflags:
       - --with-lokit-path=bundled/include
       - --with-poco-includes=$SNAPCRAFT_STAGE/include
+      - --prefix=$SNAPCRAFT_PART_INSTALL/usr
+    organize:
+      usr/etc: etc
     build-packages:
       - libpng12-dev
       - libcap-dev
       - libcppunit-dev
     stage-packages:
       - libcppunit-1.13-0v5
-    organize:
-      loafleaf/dist: usr/share/loafleaf/dist
+    prime:
+      - -usr/share/doc
     after: [poco]
+
+  # dist:
+  #   plugin: nodejs
+  #   source: git://anongit.freedesktop.org/libreoffice/online
+  #   source-type: git
+  #   source-branch: distro/collabora/collabora-online-2-0
+  #   source-subdir: loleaflet
+  #   node-packages:
+  #     - jake
 
   loolwsd-customizations:
     plugin: dump

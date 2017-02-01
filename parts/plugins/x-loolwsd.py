@@ -22,12 +22,13 @@
 
 import os
 import logging
+import shutil
 
 from snapcraft.plugins import autotools
 
 logger = logging.getLogger(__name__)
 
-class AutotoolsAndPatchPlugin(autotools.AutotoolsPlugin):
+class LoolwsdPlugin(autotools.AutotoolsPlugin):
 
     @classmethod
     def schema(cls):
@@ -43,10 +44,27 @@ class AutotoolsAndPatchPlugin(autotools.AutotoolsPlugin):
     def pull(self):
         super().pull()
 
-        patches_path = os.path.join(os.getcwd(), self.options.patches)
+        # Apply patches if found in patches folder after pulling sources from repo
+        project_dir = os.getcwd()
+        patches_path = os.path.join(project_dir, self.options.patches)
         if os.path.exists(patches_path):
             os.chdir(self.sourcedir)
             for file in os.listdir(patches_path):
-                if file.endswith(".patch"):
+                if file.endswith('.patch'):
                     logger.info('applying patch ' + file)
-                    os.system("git am --signoff < " + os.path.join(patches_path, file))
+                    os.system('git am --signoff < ' + os.path.join(patches_path, file))
+            os.chdir(project_dir)
+
+    def build(self):
+        super().build()
+
+        # copy dist
+        src = os.path.join(self.builddir, 'loleaflet/dist')
+        dst = os.path.join(self.installdir, 'usr/share/loolwsd/loleaflet/dist')
+        logger.info('src: ' + src)
+        logger.info('dst: ' + dst)
+        # if not os.path.exists(dst):
+        #     os.makedirs(dst, exist_ok=True)
+        if os.path.exists(dst):
+            shutil.rmtree(dst)
+        shutil.copytree(src, dst)
