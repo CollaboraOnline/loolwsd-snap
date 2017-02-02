@@ -19,18 +19,9 @@ index ae9803b..663d34f 100644
 +.PHONY: install
 +install: dist workaround-install
 +workaround-install:
-+	test ../../install/usr/share/loolwsd/loleaflet || mkdir -p ../../install/usr/share/loolwsd/loleaflet 
-+	cp -ar loleaflet-$(VERSION)/dist ../../install/usr/share/loolwsd/loleaflet
++	mkdir -p ../../install/usr/share/loolwsd/loleaflet 
++	cp -ar dist ../../install/usr/share/loolwsd/loleaflet
 +
  .PHONY: dist
  dist: MINIFY=true
  dist: all
-@@ -41,7 +47,7 @@ dist: all
- 	mkdir -p loleaflet-$(VERSION)/dist/node_modules/jquery-ui/themes/ui-lightness/images/
- 	cp -a node_modules/jquery-ui/themes/ui-lightness/images/ui-bg_highlight-soft_100_eeeeee_1x100.png loleaflet-$(VERSION)/dist/node_modules/jquery-ui/themes/ui-lightness/images/
- 	tar cfz loleaflet-$(VERSION).tar.gz loleaflet-$(VERSION)
--	rm -rf loleaflet-$(VERSION)
-+#	rm -rf loleaflet-$(VERSION)
- 
- pot:
- 	xgettext --from-code=UTF-8 --keyword=_ --output=po/templates/loleaflet-ui.pot \

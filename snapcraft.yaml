@@ -1,12 +1,12 @@
 name: loolwsd
-version: '2.0.2'
+version: '2.0.3'
 summary: LibreOffice On-Line WebSocket Daemon
 description: |
   LOOLWSD is a daemon that talks to web browser clients and provides LibreOffice
   services.
 
 grade: devel # must be 'stable' to release into candidate/stable channels
-confinement: classic # use 'strict' once you have the right plugs and slots
+confinement: devmode # use 'strict' once you have the right plugs and slots
 
 apps:
   
