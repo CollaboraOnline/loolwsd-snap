@@ -18,13 +18,17 @@
     git am --signoff < [patch]
 
     taking as source all .patch files found in folder specified by using 'patches' property
+
+    Also replaces SUBDIRS at the beginning of Makefile.am for including loleaflet subdir
 """
 
 import os
 import logging
 import shutil
+import sys
 
 from snapcraft.plugins import autotools
+from tempfile import mkstemp
 
 logger = logging.getLogger(__name__)
 
@@ -43,10 +47,10 @@ class LoolwsdPlugin(autotools.AutotoolsPlugin):
 
     def pull(self):
         super().pull()
-
         # Apply patches if found in patches folder after pulling sources from repo
         project_dir = os.getcwd()
         patches_path = os.path.join(project_dir, self.options.patches)
+
         if os.path.exists(patches_path):
             os.chdir(self.sourcedir)
             for file in os.listdir(patches_path):
@@ -54,17 +58,4 @@ class LoolwsdPlugin(autotools.AutotoolsPlugin):
                     logger.info('applying patch ' + file)
                     os.system('git am --signoff < ' + os.path.join(patches_path, file))
             os.chdir(project_dir)
-
-    def build(self):
-        super().build()
-
-        # copy dist
-        src = os.path.join(self.builddir, 'loleaflet/dist')
-        dst = os.path.join(self.installdir, 'usr/share/loolwsd/loleaflet/dist')
-        logger.info('src: ' + src)
-        logger.info('dst: ' + dst)
-        # if not os.path.exists(dst):
-        #     os.makedirs(dst, exist_ok=True)
-        if os.path.exists(dst):
-            shutil.rmtree(dst)
-        shutil.copytree(src, dst)
+   

@@ -12,9 +12,9 @@ apps:
   
   loolwsd:
     command: loolwsd-start
-    # stop-command: killall -g loolwsd
-    # restart-condition: always
-    # daemon: simple
+    stop-command: killall -g loolwsd
+    restart-condition: always
+    daemon: simple
 
   flush-cache:
     command: loolwsd-cache-flush
@@ -56,20 +56,12 @@ parts:
       - libpng12-dev
       - libcap-dev
       - libcppunit-dev
+      - python-polib
     stage-packages:
       - libcppunit-1.13-0v5
     prime:
       - -usr/share/doc
     after: [poco]
-
-  # dist:
-  #   plugin: nodejs
-  #   source: git://anongit.freedesktop.org/libreoffice/online
-  #   source-type: git
-  #   source-branch: distro/collabora/collabora-online-2-0
-  #   source-subdir: loleaflet
-  #   node-packages:
-  #     - jake
 
   loolwsd-customizations:
     plugin: dump
