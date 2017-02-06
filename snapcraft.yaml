@@ -12,9 +12,9 @@ apps:
   
   loolwsd:
     command: loolwsd-start
-    stop-command: killall -g loolwsd
-    restart-condition: always
-    daemon: simple
+    # stop-command: killall -g loolwsd
+    # restart-condition: always
+    # daemon: simple
 
   flush-cache:
     command: loolwsd-cache-flush
@@ -23,11 +23,96 @@ apps:
     daemon: simple
 
 parts:
+  libreoffice:
+    plugin: repository
+    stage-packages:
+      - collaboraoffice5.1
+      - collaboraoffice5.1-ure
+      - collaboraofficebasis5.1-calc
+      - collaboraofficebasis5.1-core
+      - collaboraofficebasis5.1-en-us
+      - collaboraofficebasis5.1-en-us-calc
+      - collaboraofficebasis5.1-en-us-res
+      - collaboraofficebasis5.1-graphicfilter
+      - collaboraofficebasis5.1-images
+      - collaboraofficebasis5.1-impress
+      - collaboraofficebasis5.1-writer
+      - code-brand
+
+  system-extra-libs:
+    plugin: nil
+    stage-packages:
+      # X11 packages
+      - libx11-6
+      - libc6
+      # fonts packages
+      - fonts-dejavu-core
+      - fonts-freefont-ttf
+      - fonts-guru
+      - fonts-guru-extra
+      - fonts-kacst
+      - fonts-kacst-one
+      - fonts-khmeros-core
+      - fonts-lao
+      - fonts-liberation
+      - fonts-lklug-sinhala
+      - fonts-lohit-guru
+      - fonts-nanum
+      - fonts-noto-cjk
+      - fonts-opensymbol
+      - fonts-sil-abyssinica
+      - fonts-sil-padauk
+      - fonts-stix
+      - fonts-symbola
+      - fonts-takao-pgothic
+      - fonts-thai-tlwg
+      - fonts-tibetan-machine
+      - fonts-tlwg-garuda
+      - fonts-tlwg-garuda-ttf
+      - fonts-tlwg-kinnari
+      - fonts-tlwg-kinnari-ttf       
+      - fonts-tlwg-laksaman
+      - fonts-tlwg-laksaman-ttf                                                                                                      
+      - fonts-tlwg-loma
+      - fonts-tlwg-loma-ttf
+      - fonts-tlwg-mono
+      - fonts-tlwg-mono-ttf
+      - fonts-tlwg-norasi
+      - fonts-tlwg-norasi-ttf
+      - fonts-tlwg-purisa
+      - fonts-tlwg-purisa-ttf
+      - fonts-tlwg-sawasdee
+      - fonts-tlwg-sawasdee-ttf
+      - fonts-tlwg-typewriter
+      - fonts-tlwg-typewriter-ttf
+      - fonts-tlwg-typist
+      - fonts-tlwg-typist-ttf
+      - fonts-tlwg-typo
+      - fonts-tlwg-typo-ttf
+      - fonts-tlwg-umpush
+      - fonts-tlwg-umpush-ttf
+      - fonts-tlwg-waree
+      - fonts-tlwg-waree-ttf
+      - ghostscript
+      - gsfonts
+      - libfont-afm-perl #needed?
+      - libfontconfig1
+      - libfontembed1
+      - libfontenc1
+      - libxfont1
+      - ttf-ancient-fonts-symbola
+      - ttf-dejavu-core #needed?
+      - ttf-ubuntu-font-family
+      - xfonts-base
+      - xfonts-encodings
+      - xfonts-scalable
+      - xfonts-utils
+
   poco:
     plugin: autotools
     source: https://github.com/pocoproject/poco
     source-type: git
-    source-branch: develop
+    source-branch: master
     configflags:
       - --no-tests
       - --no-samples
@@ -47,8 +132,8 @@ parts:
     install-via: prefix
     patches: src/loolwsd/patch
     configflags:
-      - --with-lokit-path=bundled/include
       - --with-poco-includes=$SNAPCRAFT_STAGE/include
+      - --with-lokit-path=bundled/include
       - --prefix=$SNAPCRAFT_PART_INSTALL/usr
     organize:
       usr/etc: etc
@@ -57,8 +142,7 @@ parts:
       - libcap-dev
       - libcppunit-dev
       - python-polib
-    stage-packages:
-      - libcppunit-1.13-0v5
+    
     prime:
       - -usr/share/doc
     after: [poco]
@@ -68,19 +152,3 @@ parts:
     source: src/loolwsd
     stage:
       - -patch
-
-  dependencies:
-    plugin: repository
-    stage-packages:
-      - collaboraoffice5.1
-      - collaboraoffice5.1-ure
-      - collaboraofficebasis5.1-calc
-      - collaboraofficebasis5.1-core
-      - collaboraofficebasis5.1-en-us
-      - collaboraofficebasis5.1-en-us-calc
-      - collaboraofficebasis5.1-en-us-res
-      - collaboraofficebasis5.1-graphicfilter
-      - collaboraofficebasis5.1-images
-      - collaboraofficebasis5.1-impress
-      - collaboraofficebasis5.1-writer
-      - code-brand

@@ -57,5 +57,4 @@ class LoolwsdPlugin(autotools.AutotoolsPlugin):
                 if file.endswith('.patch'):
                     logger.info('applying patch ' + file)
                     os.system('git am --signoff < ' + os.path.join(patches_path, file))
-            os.chdir(project_dir)
    
