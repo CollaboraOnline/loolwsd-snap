@@ -27,6 +27,8 @@ import logging
 import shutil
 import sys
 
+import subprocess
+
 from snapcraft.plugins import autotools
 from tempfile import mkstemp
 
@@ -56,7 +58,9 @@ class LoolwsdPlugin(autotools.AutotoolsPlugin):
             for file in os.listdir(patches_path):
                 if file.endswith('.patch'):
                     logger.info('applying patch ' + file)
-                    os.system('git am --signoff < ' + os.path.join(patches_path, file))
+                    #os.system('git apply ' + os.path.join(patches_path, file))
+                    subprocess.check_call(['git', 'apply', os.path.join(patches_path, file)])
+                    #os.system('git am --signoff < ' + os.path.join(patches_path, file))
 
             os.chdir(project_dir)
    

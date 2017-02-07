@@ -55,7 +55,11 @@ parts:
       - libx11-6
       - libc6-dev
       - libx11-dev
+      # OpenGL
+      - libgl1-mesa-glx
       # fonts packages
+      - fontconfig
+      - fontconfig-config
       - fonts-dejavu-core
       - fonts-freefont-ttf
       - fonts-guru
@@ -122,7 +126,7 @@ parts:
     plugin: autotools
     source: https://github.com/pocoproject/poco
     source-type: git
-    source-branch: develop
+    source-branch: master
     configflags:
       - --no-tests
       - --no-samples
@@ -142,9 +146,13 @@ parts:
     install-via: prefix
     patches: src/loolwsd/patch
     configflags:
-      - --with-poco-includes=$SNAPCRAFT_STAGE/include
       - --with-lokit-path=bundled/include
+      - --with-poco-includes=$SNAPCRAFT_STAGE/include
       - --prefix=$SNAPCRAFT_PART_INSTALL/usr
+      - --enable-debug #to test it using root user
+      - --disable-option-checking
+      - --disable-ssl
+      #- --enable-static
     organize:
       usr/etc: etc
     build-packages:

@@ -45,7 +45,7 @@ find /etc/passwd /etc/group /etc/hosts \
 find /etc/fonts \
      /lib/ld-* /lib64/ld-* \
      /lib/libnss_* /lib64/libnss_* /lib/*-linux-gnu/libnss*\
-     /lib/libcap* /lib64/libcap* /lib/*-linux-gnu/libcap* \
+     /lib/libcap* /lib/libcap* /lib64/libcap* /lib/*-linux-gnu/libcap* \
      /lib/libattr* /lib/*-linux-gnu/libattr* \
      /usr/lib/libpng* /usr/lib64/libpng* \
 	 -type l
@@ -64,7 +64,7 @@ find $SNAP/lib/ld-* $SNAP/lib64/ld-* \
      $SNAP/usr/lib/locale/locale_archive \
      $SNAP/usr/share/zoneinfo/* \
      $SNAP/usr/share/liblangtag \
-     $SNAP/usr/lib/libpng* $SNAP/usr/lib64/libpng* \
+     $SNAP/usr/lib/libpng* $SNAP/usr/lib64/libpng* $SNAP/usr/lib/*-linux-gnu/libpng*\
 	 -type f
 
 find $SNAP/etc/fonts \
