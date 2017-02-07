@@ -1,6 +1,6 @@
 
 all:
-	APT_CONFIG=$$PWD/apt.conf snapcraft prime
+	APT_CONFIG=$$PWD/snap/repository/apt.conf snapcraft prime
 	# set Linux capabilities used by loolwsd and repack snap package
 	# using mksquashfs to avoid of mksquashfs option "-no-xattrs" used by snapcraft
 	sudo setcap cap_fowner,cap_mknod,cap_sys_chroot=ep prime/usr/bin/loolforkit

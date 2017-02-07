@@ -1,6 +1,7 @@
 #!/bin/sh
 
 set -e
+set -x
 
 adduser --quiet --system --group --home $SNAP_DATA/opt/lool lool && usermod -d $SNAP_DATA/opt/lool lool
 mkdir -p $SNAP_COMMON/cache/ && chown lool: $SNAP_COMMON/cache/
@@ -31,8 +32,15 @@ sed -i "/tile_cache_path/s#><#>$SNAP_COMMON/cache<#;/loolwsd.log/s#/var.*loolwsd
 rm -rf $SNAP_DATA/opt/collaboraoffice5.1
 cp -r -p -L $SNAP/opt/collaboraoffice5.1 $SNAP_DATA/opt || true
 
-su lool --shell=/bin/sh -c "$SNAP/bin/loolwsd-systemplate-set $SNAP_DATA/opt/lool/systemplate $SNAP_DATA/opt/collaboraoffice5.1 >/dev/null 2>&1"
+#su lool --shell=/bin/sh -c "$SNAP/bin/loolwsd-systemplate-set $SNAP_DATA/opt/lool/systemplate $SNAP_DATA/opt/collaboraoffice5.1 >/dev/null 2>&1"
+su lool --shell=/bin/sh -c "$SNAP/bin/loolwsd-systemplate-set $SNAP_DATA/opt/lool/systemplate $SNAP_DATA/opt/collaboraoffice5.1"
 
-su lool --shell=/bin/sh -c "LD_LIBRARY_PATH=$SNAP/usr/lib $SNAP/usr/bin/loolwsd --o:sys_template_path=$SNAP_DATA/opt/lool/systemplate --o:lo_template_path=$SNAP_DATA/opt/collaboraoffice5.1 --o:child_root_path=$SNAP_DATA/opt/lool/child-roots --o:file_server_root_path=$SNAP/usr/share/loolwsd --config-file=$SNAP_DATA/etc/loolwsd/loolwsd.xml"
+su lool --shell=/bin/sh -c "LD_LIBRARY_PATH=$SNAP/usr/lib:$SNAP/lib:$SNAP/usr/lib/x86_64-linux-gnu \
+	$SNAP/usr/bin/loolwsd \
+	--o:sys_template_path=$SNAP_DATA/opt/lool/systemplate \
+	--o:lo_template_path=$SNAP_DATA/opt/collaboraoffice5.1 \
+	--o:child_root_path=$SNAP_DATA/opt/lool/child-roots \
+	--o:file_server_root_path=$SNAP/usr/share/loolwsd \
+	--config-file=$SNAP_DATA/etc/loolwsd/loolwsd.xml"
 
 

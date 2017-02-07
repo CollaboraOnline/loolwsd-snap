@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -e
+set -x
+
 test $# -eq 2 || { echo "Usage: $0 <chroot template directory for system libs to create> <LO installation directory>"; exit 1; }
 
 # No provision for spaces or other weird characters in pathnames. So sue me.
@@ -94,13 +97,12 @@ mkdir -p $CHROOT/usr/bin/
 
 cd $CHROOT || exit 1
 
+# pwd is template path
 mkdir -p usr/share || exit 1
-#cp -r -p -L /usr/share/fonts usr/share
-cp -r -p -L $SNAP/share/fonts usr/share
+cp -r -p -L $SNAP/usr/share/fonts usr/share
 
 if [ -h usr/share/fonts/ghostscript ]; then
     mkdir usr/share/ghostscript || exit 1
-    #cp -r -p -L /usr/share/ghostscript/fonts usr/share/ghostscript
     cp -r -p -L $SNAP/usr/share/ghostscript/fonts usr/share/ghostscript
 fi
 
