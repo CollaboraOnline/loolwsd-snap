@@ -47,7 +47,7 @@ parts:
       - collaboraofficebasis5.1-impress
       - collaboraofficebasis5.1-writer
       - code-brand
-
+  
   system-extra-libs:
     plugin: nil
     stage-packages:
@@ -114,6 +114,13 @@ parts:
       - xfonts-encodings
       - xfonts-scalable
       - xfonts-utils
+
+  systemplate:
+    plugin: nil
+    prepare: ./src/systemplate/loolwsd-systemplate-set.sh
+    after: [libreoffice]
+    stage:
+      - systemplate
 
   poco:
     plugin: autotools

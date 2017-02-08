@@ -3,16 +3,16 @@
 set -e
 set -x
 
-test $# -eq 2 || { echo "Usage: $0 <chroot template directory for system libs to create> <LO installation directory>"; exit 1; }
-
 # No provision for spaces or other weird characters in pathnames. So sue me.
 
-CHROOT=$1
-INSTDIR=$2
+#deploy resultant template in systemplate subfolder 
+CHROOT=$(pwd)/../install/systemplate
+# get collaboraoffice from stage folder
+INSTDIR=$(pwd)/../../../stage/opt/collaboraoffice5.1
 
 test -d "$INSTDIR" || { echo "No such directory: $INSTDIR"; exit 1; }
 
-mkdir $CHROOT || exit 1
+[ -e $CHROOT ] || mkdir $CHROOT || exit 1
 
 CHROOT=`cd $CHROOT && /bin/pwd`
 INSTDIR=`cd $INSTDIR && /bin/pwd`
@@ -50,31 +50,6 @@ find /etc/fonts \
      /usr/lib/libpng* /usr/lib64/libpng* \
 	 -type l
 
-# First essential files and shared objects
-find $SNAP/lib/ld-* $SNAP/lib64/ld-* \
-     $SNAP/lib/libcap* $SNAP/lib64/libcap* $SNAP/lib/*-linux-gnu/libcap* \
-     $SNAP/lib/libattr* $SNAP/lib/*-linux-gnu/libattr* \
-     $SNAP/etc/ld.so.* \
-     $SNAP/lib/libnss_* $SNAP/lib64/libnss_* $SNAP/lib/*-linux-gnu/libnss*\
-     $SNAP/var/cache/fontconfig \
-     $SNAP/etc/fonts \
-     $SNAP/etc/localtime \
-     $SNAP/usr/lib/locale/en_US.utf8 \
-     $SNAP/usr/lib/locale/C.UTF-8 \
-     $SNAP/usr/lib/locale/locale_archive \
-     $SNAP/usr/share/zoneinfo/* \
-     $SNAP/usr/share/liblangtag \
-     $SNAP/usr/lib/libpng* $SNAP/usr/lib64/libpng* $SNAP/usr/lib/*-linux-gnu/libpng*\
-	 -type f
-
-find $SNAP/etc/fonts \
-     $SNAP/lib/ld-* $SNAP/lib64/ld-* \
-     $SNAP/lib/libnss_* $SNAP/lib64/libnss_* $SNAP/lib/*-linux-gnu/libnss*\
-     $SNAP/lib/libcap* $SNAP/lib64/libcap* $SNAP/lib/*-linux-gnu/libcap* \
-     $SNAP/lib/libattr* $SNAP/lib/*-linux-gnu/libattr* \
-     $SNAP/usr/lib/libpng* $SNAP/usr/lib64/libpng* \
-	 -type l
-
 # Go through the LO shared objects and check what system libraries
 # they link to.
 find $INSTDIR -name '*.so' -o -name '*.so.[0-9]*' |
@@ -99,11 +74,11 @@ cd $CHROOT || exit 1
 
 # pwd is template path
 mkdir -p usr/share || exit 1
-cp -r -p -L $SNAP/usr/share/fonts usr/share
+cp -r -p -L /usr/share/fonts usr/share
 
 if [ -h usr/share/fonts/ghostscript ]; then
     mkdir usr/share/ghostscript || exit 1
-    cp -r -p -L $SNAP/usr/share/ghostscript/fonts usr/share/ghostscript
+    cp -r -p -L /usr/share/ghostscript/fonts usr/share/ghostscript
 fi
 
 # Debugging only hackery to avoid confusion.
