@@ -31,6 +31,7 @@ mkdir -p -m 750 $SNAP_DATA/etc $SNAP_DATA/usr/share
 [ -d $SNAP_DATA/opt/collaboraoffice5.1 ] || sed -i "/tile_cache_path/s#><#>$SNAP_COMMON/cache<#
 /loolwsd.log/s#/var.*loolwsd.log#$SNAP_DATA/log/loolwsd.log#
 /<termination/s#>\(true\)\?<#>false<#
+/<filesystem/s#>\(false\)\?<#>true<#
 /<ssl/!b;n;s/>\(true\)\?</>false</" $SNAP_DATA/etc/loolwsd/loolwsd.xml
 
 # install CollaboraOffice to use fast hard linking for forking a kit process
@@ -40,7 +41,6 @@ cp -r -p $SNAP/opt/collaboraoffice5.1 $SNAP_DATA/opt
 # copy template to snap data
 [ -d $SNAP_DATA/opt/lool/systemplate ] || cp -r -p $SNAP/systemplate $SNAP_DATA/opt/lool
 
-# update LD_LIBRARY_PATH and launch service
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SNAP/usr/lib:$SNAP/lib:$SNAP/lib/x86_64-linux-gnu:$SNAP/usr/lib/x86_64-linux-gnu
 $SNAP/usr/bin/loolwsd \
 	--o:sys_template_path=$SNAP_DATA/opt/lool/systemplate \

@@ -6,7 +6,7 @@ description: |
   services.
 
 grade: devel # must be 'stable' to release into candidate/stable channels
-confinement: devmode # use 'strict' once you have the right plugs and slots
+confinement: classic # use 'strict' once you have the right plugs and slots
 
 apps:
   
@@ -48,7 +48,7 @@ parts:
       - collaboraofficebasis5.1-writer
       - code-brand
   
-  system-extra-libs:
+  fonts:
     plugin: nil
     stage-packages:
       - fontconfig
@@ -102,13 +102,13 @@ parts:
       - fonts-tlwg-waree-ttf
       - ghostscript
       - gsfonts
-      - libfont-afm-perl #needed?
+      - libfont-afm-perl
       - libfontconfig1
       - libfontembed1
       - libfontenc1
       - libxfont1
       - ttf-ancient-fonts-symbola
-      - ttf-dejavu-core #needed?
+      - ttf-dejavu-core
       - ttf-ubuntu-font-family
       - xfonts-base
       - xfonts-encodings
@@ -118,7 +118,7 @@ parts:
   systemplate:
     plugin: nil
     prepare: ./src/systemplate/loolwsd-systemplate-set.sh
-    after: [libreoffice]
+    after: [libreoffice, fonts]
     stage:
       - systemplate
 
@@ -149,7 +149,7 @@ parts:
       - --with-lokit-path=bundled/include
       - --with-poco-includes=$SNAPCRAFT_STAGE/include
       - --prefix=$SNAPCRAFT_PART_INSTALL/usr
-      - --enable-debug #to test it using root user
+      - --enable-debug
       - --disable-ssl
       #- --enable-static
     organize:
@@ -158,7 +158,7 @@ parts:
       - libpng12-dev
       - libcap-dev
       - libcppunit-dev
-      - python-polib
+      - libcups2
     prime:
       - -usr/share/doc
     after: [poco, desktop-ubuntu-app-platform]
