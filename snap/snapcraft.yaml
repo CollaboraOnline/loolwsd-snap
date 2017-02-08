@@ -20,9 +20,9 @@ apps:
 
   flush-cache:
     command: loolwsd-cache-flush
-    # stop-command: killall loolwsd-service
-    # restart-condition: always
-    # daemon: simple
+    stop-command: killall loolwsd-service
+    restart-condition: always
+    daemon: simple
 
 plugs:
   platform:
@@ -51,13 +51,6 @@ parts:
   system-extra-libs:
     plugin: nil
     stage-packages:
-      # X11 packages
-      - libx11-6
-      - libc6-dev
-      - libx11-dev
-      # OpenGL
-      - libgl1-mesa-glx
-      # fonts packages
       - fontconfig
       - fontconfig-config
       - fonts-dejavu-core
@@ -150,7 +143,6 @@ parts:
       - --with-poco-includes=$SNAPCRAFT_STAGE/include
       - --prefix=$SNAPCRAFT_PART_INSTALL/usr
       - --enable-debug #to test it using root user
-      - --disable-option-checking
       - --disable-ssl
       #- --enable-static
     organize:
@@ -168,4 +160,4 @@ parts:
     plugin: dump
     source: src/loolwsd
     stage:
-      - -patch
+      - bin

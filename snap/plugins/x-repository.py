@@ -17,5 +17,5 @@ class RepositoryPlugin(snapcraft.BasePlugin):
 
     @property
     def PLUGIN_STAGE_SOURCES(self):
-        return open('snap/repository/sources.list', 'r').read()
+        return open('src/repository/sources.list', 'r').read()
 
