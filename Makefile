@@ -8,7 +8,7 @@ all:
 	mksquashfs prime loolwsd_2.0.3_amd64.snap -noappend -comp xz -all-root
 
 install:
-	sudo snap install --classic *.snap --dangerous
+	sudo snap install *.snap --dangerous
 
 clean:
 	snapcraft clean

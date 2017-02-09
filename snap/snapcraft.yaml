@@ -6,17 +6,17 @@ description: |
   services.
 
 grade: devel # must be 'stable' to release into candidate/stable channels
-confinement: classic # use 'strict' once you have the right plugs and slots
+confinement: devmode # use 'strict' once you have the right plugs and slots
 
 apps:
   
   loolwsd:
     command: desktop-launch $SNAP/bin/loolwsd-start --desktop_file_hint=unity8 "$@"
-    command: loolwsd-start
-    stop-command: killall -g loolwsd
-    restart-condition: always
-    daemon: simple
-    plugs: [unity7, opengl, platform, x11, network, network-bind]
+    #command: loolwsd-start
+    #stop-command: killall -g loolwsd
+    #restart-condition: always
+    #daemon: simple
+    plugs: [unity7, opengl, platform, x11, network, network-bind, nextcloud-data, home]
 
   flush-cache:
     command: loolwsd-cache-flush
@@ -30,6 +30,12 @@ plugs:
     default-provider: ubuntu-app-platform
     interface: content
     target: ubuntu-app-platform
+
+  nextcloud-data:
+    content: nextcloud-documents
+    default-provider: nextcloud-nextant
+    interface: content
+    target: nextcloud-data
 
 parts:
   libreoffice:
