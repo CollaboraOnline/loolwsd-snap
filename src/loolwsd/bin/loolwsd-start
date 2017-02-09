@@ -3,10 +3,10 @@
 set -e
 set -x
 
-mkdir -p -m 750 $SNAP_COMMON/cache
+[ -e $SNAP_COMMON/cache  ] 				|| mkdir -p -m 750 $SNAP_COMMON/cache
 rm -rf $SNAP_COMMON/cache/*
 
-mkdir -p -m 750 $SNAP_DATA/log
+[ -e $SNAP_COMMON/log ]					|| mkdir -p -m 750 $SNAP_COMMON/log
 
 # We assume that the LibreOffice to be used is built TDF-style
 # and installs in $SNAP/opt/collaboraoffice5.1, and that /opt/lool is
@@ -16,8 +16,8 @@ mkdir -p -m 750 $SNAP_DATA/opt/lool/child-roots
 
 # install config and data files (temporarily system-wide)
 mkdir -p -m 750 $SNAP_DATA/etc $SNAP_DATA/usr/share
-[ -d $SNAP_DATA/etc/loolwsd ]				|| cp -r --preserve=mode $SNAP/etc/loolwsd $SNAP_DATA/etc
-[ -d $SNAP_DATA/usr/share/loolwsd ]			|| cp -r --preserve=mode $SNAP/usr/share/loolwsd $SNAP_DATA/usr/share
+[ -d $SNAP_DATA/etc/loolwsd ]			|| cp -r --preserve=mode $SNAP/etc/loolwsd $SNAP_DATA/etc
+[ -d $SNAP_DATA/usr/share/loolwsd ]		|| cp -r --preserve=mode $SNAP/usr/share/loolwsd $SNAP_DATA/usr/share
 
 # set tile cache, log data paths, disable termination and SSL in loolwsd config file
 # sed -i does not work in confined mode, so we copy it to a temp file
@@ -28,10 +28,10 @@ mkdir -p -m 750 $SNAP_DATA/etc $SNAP_DATA/usr/share
 # /<ssl/!b;n;s/>\(true\)\?</>false</" $SNAP_DATA/etc/loolwsd/loolwsd.xml
 if [ ! -d $SNAP_DATA/opt/collaboraoffice5.1 ]; then
 	sed "/tile_cache_path/s#><#>$SNAP_COMMON/cache<#
-/loolwsd.log/s#/tmp.*loolwsd.log#$SNAP_DATA/log/loolwsd.log#
+/loolwsd.log/s#/tmp.*loolwsd.log#$SNAP_COMMON/log/loolwsd.log#
 /<termination/s#>\(true\)\?<#>false<#
 /<filesystem/s#=\"\(false\)\?\"#=\"true\"#
-/<ssl/!b;n;s/>\(true\)\?</>false</" $SNAP_DATA/etc/loolwsd/loolwsd.xml.tmp
+/<ssl/!b;n;s/>\(true\)\?</>false</" $SNAP_DATA/etc/loolwsd/loolwsd.xml > $SNAP_DATA/etc/loolwsd/loolwsd.xml.tmp
 	mv $SNAP_DATA/etc/loolwsd/loolwsd.xml.tmp $SNAP_DATA/etc/loolwsd/loolwsd.xml
 fi
 
@@ -40,7 +40,7 @@ rm -rf $SNAP_DATA/opt/collaboraoffice5.1
 cp -r --preserve=mode $SNAP/opt/collaboraoffice5.1 $SNAP_DATA/opt
 
 # copy template to snap data
-[ -d $SNAP_DATA/opt/lool/systemplate ] 		|| cp -r --preserve=mode $SNAP/systemplate $SNAP_DATA/opt/lool
+[ -d $SNAP_DATA/opt/lool/systemplate ] 	|| cp -r --preserve=mode $SNAP/systemplate $SNAP_DATA/opt/lool
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SNAP/usr/lib:$SNAP/lib:$SNAP/lib/x86_64-linux-gnu:$SNAP/usr/lib/x86_64-linux-gnu
 $SNAP/usr/bin/loolwsd \
