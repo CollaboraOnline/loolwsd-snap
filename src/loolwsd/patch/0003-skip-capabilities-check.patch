@@ -1,0 +1,24 @@
+diff --git a/kit/ForKit.cpp b/kit/ForKit.cpp
+index b727817..4dd97cd 100644
+--- a/kit/ForKit.cpp
++++ b/kit/ForKit.cpp
+@@ -111,8 +111,9 @@ public:
+     }
+ };
+ 
+-static bool haveCapability(cap_value_t capability)
++static bool haveCapability(cap_value_t /*capability*/)
+ {
++    /*
+     cap_t caps = cap_get_proc();
+ 
+     if (caps == nullptr)
+@@ -161,7 +162,7 @@ static bool haveCapability(cap_value_t capability)
+     {
+         LOG_INF("Have capability " << capability);
+     }
+-
++    */
+     return true;
+ }
+ 

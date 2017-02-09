@@ -11,12 +11,12 @@ confinement: strict # use 'strict' once you have the right plugs and slots
 apps:
   
   loolwsd:
-    command: desktop-launch $SNAP/bin/loolwsd-start --desktop_file_hint=unity8 "$@"
+    command: loolwsd-start
     #command: loolwsd-start
     #stop-command: killall -g loolwsd
     #restart-condition: always
     #daemon: simple
-    plugs: [unity7, opengl, platform, x11, network, network-bind, nextcloud-data, home]
+    plugs: [unity7, network, network-bind, nextcloud-data, system-observe, system-trace]
 
   flush-cache:
     command: loolwsd-cache-flush
@@ -25,12 +25,6 @@ apps:
     daemon: simple
 
 plugs:
-  platform:
-    content: ubuntu-app-platform1
-    default-provider: ubuntu-app-platform
-    interface: content
-    target: ubuntu-app-platform
-
   nextcloud-data:
     content: nextcloud-documents
     default-provider: nextcloud-nextant
@@ -172,7 +166,7 @@ parts:
       - libcups2
     prime:
       - -usr/share/doc
-    after: [poco, desktop-ubuntu-app-platform]
+    after: [poco]
 
   loolwsd-customizations:
     plugin: dump
