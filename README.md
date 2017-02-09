@@ -9,15 +9,35 @@ Up-to-date snapd and snapcraft packages (snapd 2.20 with the required "classic" 
 
 You can set APT_CONFIG as env var or use it every time you want to build
 
-    APT_CONFIG=$PWD/apt.conf snapcraft
+    export APT_CONFIG=$PWD/src/repository/apt.conf
+    snapcraft
+
+or, easier, use the make command in project folder
+    make
 
 ## Installation
 
-    sudo snap install loolwsd_2.0.1_amd64.snap --classic --dangerous
+    sudo snap install loolwsd_2.0.3_amd64.snap --classic --dangerous
+
+## Test configuration
+
+Once the snap is installed, check next values in $SNAP_DATA/etc/loolwsd/loolwsd.xml config file:
+
+     <filesystem allow="true" />
+     
+     <ssl desc="SSL settings">
+        <enable type="bool" default="true">false</enable>
+
+in case you need to modify any value in that file, you need to restart the daemon by
+
+     snap disable loolwsd && snap enable loolwsd
 
 ## Test installed Collabora Online
 
-Open http://127.0.0.1:9980
+Once the snap is installed, open browser url:
+    http://127.0.0.1:9980/loleaflet/dist/loleaflet.html?file_path=file:///<path>/<to>/<local>/<file>
+
+where <path>/<to>/<local>/<file> is the absolute url of a local document to render (odt, docx...)
 
 ## Remove snap
 
@@ -25,5 +45,5 @@ Open http://127.0.0.1:9980
 
 ## Rebuild snap from scratch
 
-    snapcraft clean && APT_CONFIG=$PWD/apt.conf snapcraft
+    make clean && make
 

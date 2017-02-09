@@ -12,11 +12,11 @@ apps:
   
   loolwsd:
     command: desktop-launch $SNAP/bin/loolwsd-start --desktop_file_hint=unity8 "$@"
-    # command: loolwsd-start
-    # stop-command: killall -g loolwsd
-    # restart-condition: always
-    # daemon: simple
-    plugs: [unity7, opengl, platform, x11]
+    command: loolwsd-start
+    stop-command: killall -g loolwsd
+    restart-condition: always
+    daemon: simple
+    plugs: [unity7, opengl, platform, x11, network, network-bind]
 
   flush-cache:
     command: loolwsd-cache-flush
