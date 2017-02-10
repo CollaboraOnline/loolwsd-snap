@@ -28,6 +28,7 @@ mkdir -p -m 750 $SNAP_DATA/etc $SNAP_DATA/usr/share
 # /<ssl/!b;n;s/>\(true\)\?</>false</" $SNAP_DATA/etc/loolwsd/loolwsd.xml
 if [ ! -d $SNAP_DATA/opt/collaboraoffice5.1 ]; then
 	sed "/tile_cache_path/s#><#>$SNAP_COMMON/cache<#
+/loolwsd.log/s#/var.*loolwsd.log#$SNAP_COMMON/log/loolwsd.log#
 /loolwsd.log/s#/tmp.*loolwsd.log#$SNAP_COMMON/log/loolwsd.log#
 /<termination/s#>\(true\)\?<#>false<#
 /<filesystem/s#=\"\(false\)\?\"#=\"true\"#

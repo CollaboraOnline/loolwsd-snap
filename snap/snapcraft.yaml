@@ -5,8 +5,8 @@ description: |
   LOOLWSD is a daemon that talks to web browser clients and provides LibreOffice
   services.
 
-grade: stable # must be 'stable' to release into candidate/stable channels
-confinement: strict # use 'strict' once you have the right plugs and slots
+grade: stable
+confinement: strict
 
 apps:
   
@@ -153,9 +153,7 @@ parts:
       - --with-lokit-path=bundled/include
       - --with-poco-includes=$SNAPCRAFT_STAGE/include
       - --prefix=$SNAPCRAFT_PART_INSTALL/usr
-      #- --enable-debug
       - --disable-ssl
-      #- --enable-static
     organize:
       usr/etc: etc
     build-packages:
