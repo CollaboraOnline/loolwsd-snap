@@ -1,0 +1,24 @@
+diff --git a/common/security.h b/common/security.h
+index cd4dd0f..fce3785 100644
+--- a/common/security.h
++++ b/common/security.h
+@@ -22,9 +22,10 @@
+ 
+ static int hasCorrectUID(const char *appName)
+ {
+-#if ENABLE_DEBUG
++//#if ENABLE_DEBUG
+     (void)appName;
+     return 1; // insecure but easy to use.
++/*
+ #else
+     struct passwd *pw = getpwuid(getuid());
+     if (pw && pw->pw_name && !strcmp(pw->pw_name, LOOL_USER_ID))
+@@ -35,6 +36,7 @@ static int hasCorrectUID(const char *appName)
+ 	return 0;
+     }
+ #endif
++*/
+ }
+ 
+ /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

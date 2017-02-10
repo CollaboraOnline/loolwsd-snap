@@ -31,6 +31,7 @@ if [ ! -d $SNAP_DATA/opt/collaboraoffice5.1 ]; then
 /loolwsd.log/s#/tmp.*loolwsd.log#$SNAP_COMMON/log/loolwsd.log#
 /<termination/s#>\(true\)\?<#>false<#
 /<filesystem/s#=\"\(false\)\?\"#=\"true\"#
+/<file enable/s#=\"\(false\)\?\"#=\"true\"#
 /<ssl/!b;n;s/>\(true\)\?</>false</" $SNAP_DATA/etc/loolwsd/loolwsd.xml > $SNAP_DATA/etc/loolwsd/loolwsd.xml.tmp
 	mv $SNAP_DATA/etc/loolwsd/loolwsd.xml.tmp $SNAP_DATA/etc/loolwsd/loolwsd.xml
 fi

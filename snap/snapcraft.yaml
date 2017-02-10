@@ -5,18 +5,17 @@ description: |
   LOOLWSD is a daemon that talks to web browser clients and provides LibreOffice
   services.
 
-grade: devel # must be 'stable' to release into candidate/stable channels
+grade: stable # must be 'stable' to release into candidate/stable channels
 confinement: strict # use 'strict' once you have the right plugs and slots
 
 apps:
   
   loolwsd:
     command: loolwsd-start
-    #command: loolwsd-start
-    #stop-command: killall -g loolwsd
-    #restart-condition: always
-    #daemon: simple
-    plugs: [unity7, network, network-bind, nextcloud-data, system-observe, system-trace]
+    stop-command: killall -g loolwsd
+    restart-condition: always
+    daemon: simple
+    plugs: [x11, network, network-bind, nextcloud-data, system-observe, system-trace, docker-support]
 
   flush-cache:
     command: loolwsd-cache-flush
@@ -154,7 +153,7 @@ parts:
       - --with-lokit-path=bundled/include
       - --with-poco-includes=$SNAPCRAFT_STAGE/include
       - --prefix=$SNAPCRAFT_PART_INSTALL/usr
-      - --enable-debug
+      #- --enable-debug
       - --disable-ssl
       #- --enable-static
     organize:
