@@ -17,7 +17,7 @@ or, easier, use the make command in project folder
 
 ## Installation
 
-    sudo snap install loolwsd_2.0.3_amd64.snap --classic --dangerous
+    sudo snap install code-rmescandon_2.0.3_amd64.snap --dangerous
 
 ## Test configuration
 
@@ -30,7 +30,7 @@ Once the snap is installed, check next values in $SNAP_DATA/etc/loolwsd/loolwsd.
 
 in case you need to modify any value in that file, you need to restart the daemon by
 
-     snap disable loolwsd && snap enable loolwsd
+     snap disable code-rmescandon && snap enable code-rmescandon 
 
 ## Test installed Collabora Online
 
@@ -41,7 +41,7 @@ where <path>/<to>/<local>/<file> is the absolute url of a local document to rend
 
 ## Remove snap
 
-    sudo snap remove loolwsd
+    sudo snap remove code-rmescandon 
 
 ## Rebuild snap from scratch
 
