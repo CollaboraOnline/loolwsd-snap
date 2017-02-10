@@ -44,6 +44,8 @@ cp -r --preserve=mode $SNAP/opt/collaboraoffice5.1 $SNAP_DATA/opt
 # copy template to snap data
 [ -d $SNAP_DATA/opt/lool/systemplate ] 	|| cp -r --preserve=mode $SNAP/systemplate $SNAP_DATA/opt/lool
 
+# set explicitly where the fonts config file is
+export FONTCONFIG_FILE=$SNAP/etc/fonts/fonts.conf
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SNAP/usr/lib:$SNAP/lib:$SNAP/lib/x86_64-linux-gnu:$SNAP/usr/lib/x86_64-linux-gnu
 $SNAP/usr/bin/loolwsd \
 	--o:sys_template_path=$SNAP_DATA/opt/lool/systemplate \

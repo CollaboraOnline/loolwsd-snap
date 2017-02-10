@@ -1,27 +1,34 @@
-name: loolwsd
+name: code-rmescandon
 version: '2.0.3'
-summary: LibreOffice On-Line WebSocket Daemon
+summary: Collabora Online Developer Edition
 description: |
-  LOOLWSD is a daemon that talks to web browser clients and provides LibreOffice
-  services.
+  LOOLWSD (LibreOffice On-Line WebSocket Daemon) is a daemon that talks to web browser 
+  clients and provides LibreOffice services.
+  This snap includes also a reverse proxy to communicate other services to this one
 
 grade: stable
 confinement: strict
 
 apps:
-  
   loolwsd:
     command: loolwsd-start
     stop-command: killall -g loolwsd
     restart-condition: always
     daemon: simple
-    plugs: [x11, network, network-bind, nextcloud-data, system-observe, system-trace, docker-support]
+    plugs: [x11, network, network-bind, nextcloud-data, system-observe, docker-support]
 
   flush-cache:
     command: loolwsd-cache-flush
     stop-command: killall loolwsd-service
     restart-condition: always
     daemon: simple
+
+  reverse-proxy:
+    command: run-httpd -k start -DFOREGROUND
+    stop-command: run-httpd -k stop
+    daemon: simple
+    restart-condition: always
+    plugs: [network, network-bind]
 
 plugs:
   nextcloud-data:
@@ -168,5 +175,50 @@ parts:
   loolwsd-customizations:
     plugin: dump
     source: src/loolwsd
+    organize:
+      conf/fonts.conf: etc/fonts/
     stage:
       - bin
+      - etc
+
+  apache:
+    plugin: apache
+    source: http://apache.rediris.es/httpd/httpd-2.4.25.tar.bz2
+    # The built-in Apache modules to enable
+    modules:
+      - headers
+      - proxy
+      - setenvif
+      - env
+      - rewrite
+      - mime
+      - dir
+      - authz_core
+      - unixd
+      - alias
+      - ssl
+      - socache_shmcb
+      - proxy_wstunnel
+      - proxy_http
+      - log_config
+    filesets:
+      exclude:
+        - -man
+        - -manual
+        - -htdocs
+        - -include
+        - -build
+        - -conf/httpd.conf
+        - -conf/magic
+        - -conf/original
+        - -conf/extra
+        - -bin/apachectl
+        - -bin/envvars*
+    stage:
+      - $exclude
+    prime:
+      - $exclude
+
+  apache-customizations:
+    plugin: dump
+    source: src/apache
