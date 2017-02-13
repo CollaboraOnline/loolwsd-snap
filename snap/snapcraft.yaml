@@ -16,7 +16,7 @@ apps:
     stop-command: killall -g loolwsd
     restart-condition: always
     daemon: simple
-    plugs: [x11, network, network-bind, nextcloud-data, system-observe, docker-support]
+    plugs: [network, network-bind, nextcloud-data, system-observe, docker-support]
 
   flush-cache:
     command: loolwsd-cache-flush
