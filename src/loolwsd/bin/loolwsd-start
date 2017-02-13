@@ -19,20 +19,22 @@ mkdir -p -m 750 $SNAP_DATA/etc $SNAP_DATA/usr/share
 [ -d $SNAP_DATA/etc/loolwsd ]			|| cp -r --preserve=mode $SNAP/etc/loolwsd $SNAP_DATA/etc
 [ -d $SNAP_DATA/usr/share/loolwsd ]		|| cp -r --preserve=mode $SNAP/usr/share/loolwsd $SNAP_DATA/usr/share
 
-# set tile cache, log data paths, disable termination and SSL in loolwsd config file
+# modify loolwsd.xml config file:
+#	set tile cache, 
+#	log data paths, 
+#	disable termination and SSL 
+#	disable filesystem storage
+#	enable wopi storage
+#
 # sed -i does not work in confined mode, so we copy it to a temp file
-# [ -d $SNAP_DATA/opt/collaboraoffice5.1 ] || sed -i "/tile_cache_path/s#><#>$SNAP_COMMON/cache<#
-# /loolwsd.log/s#/tmp.*loolwsd.log#$SNAP_DATA/log/loolwsd.log#
-# /<termination/s#>\(true\)\?<#>false<#
-# /<filesystem/s#=\"\(false\)\?\"#=\"true\"#
-# /<ssl/!b;n;s/>\(true\)\?</>false</" $SNAP_DATA/etc/loolwsd/loolwsd.xml
 if [ ! -d $SNAP_DATA/opt/collaboraoffice5.1 ]; then
 	sed "/tile_cache_path/s#><#>$SNAP_COMMON/cache<#
 /loolwsd.log/s#/var.*loolwsd.log#$SNAP_COMMON/log/loolwsd.log#
 /loolwsd.log/s#/tmp.*loolwsd.log#$SNAP_COMMON/log/loolwsd.log#
-/<termination/s#>\(true\)\?<#>false<#
-/<filesystem/s#=\"\(false\)\?\"#=\"true\"#
 /<file enable/s#=\"\(false\)\?\"#=\"true\"#
+/<termination/s#>\(true\)\?<#>false<#
+/<filesystem/s#=\"\(true\)\?\"#=\"false\"#
+/<wopi/s#=\"\(false\)\?\"#=\"true\"#
 /<ssl/!b;n;s/>\(true\)\?</>false</" $SNAP_DATA/etc/loolwsd/loolwsd.xml > $SNAP_DATA/etc/loolwsd/loolwsd.xml.tmp
 	mv $SNAP_DATA/etc/loolwsd/loolwsd.xml.tmp $SNAP_DATA/etc/loolwsd/loolwsd.xml
 fi
