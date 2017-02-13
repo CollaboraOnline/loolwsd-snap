@@ -1,7 +1,8 @@
-name: code-rmescandon
-version: '2.0.3'
+name: code
+version: '2.0.3-1'
 summary: Collabora Online Developer Edition
 description: |
+  Offers Office online integration with nextcloud.
   LOOLWSD (LibreOffice On-Line WebSocket Daemon) is a daemon that talks to web browser 
   clients and provides LibreOffice services.
   This snap includes also a reverse proxy to communicate other services to this one
@@ -125,6 +126,8 @@ parts:
       - xfonts-encodings
       - xfonts-scalable
       - xfonts-utils
+    stage:
+      - -etc/fonts/fonts.conf
 
   systemplate:
     plugin: nil
@@ -180,6 +183,7 @@ parts:
     stage:
       - bin
       - etc
+    after: [system-extra-libs]
 
   apache:
     plugin: apache
