@@ -1,5 +1,5 @@
 name: code
-version: '2.0.3-1'
+version: '2.0.3-3'
 summary: Collabora Online Developer Edition
 description: |
   Offers Office online integration with nextcloud.
@@ -7,8 +7,8 @@ description: |
   clients and provides LibreOffice services.
   This snap includes also a reverse proxy to communicate other services to this one
 
-grade: stable
-confinement: strict
+grade: devel
+confinement: devmode
 
 apps:
   loolwsd:
@@ -16,7 +16,7 @@ apps:
     stop-command: killall -g loolwsd
     restart-condition: always
     daemon: simple
-    plugs: [network, network-bind, nextcloud-data, system-observe, docker-support]
+    plugs: [network, network-bind, nextcloud-data, system-observe]
 
   flush-cache:
     command: loolwsd-cache-flush
