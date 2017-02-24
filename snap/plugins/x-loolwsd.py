@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """This plugin applies a bunch of patches on the code using
-    git am --signoff < [patch]
+    git apply [patch]
 
     taking as source all .patch files found in folder specified by using 'patches' property
 
