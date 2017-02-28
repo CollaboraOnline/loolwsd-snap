@@ -3,8 +3,6 @@
 set -e
 set -x
 
-# No provision for spaces or other weird characters in pathnames. So sue me.
-
 #deploy resultant template in systemplate subfolder 
 CHROOT=$(pwd)/../install/systemplate
 # get collaboraoffice from stage folder

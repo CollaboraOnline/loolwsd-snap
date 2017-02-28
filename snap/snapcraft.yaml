@@ -1,5 +1,5 @@
 name: code
-version: '2.0.3-4'
+version: '2.0.3-5'
 summary: Collabora Online Developer Edition
 description: |
   Offers Office online integration with nextcloud.
@@ -12,21 +12,21 @@ confinement: devmode
 
 apps:
   loolwsd:
-    command: loolwsd-start
+    command: bin/loolwsd-start
     stop-command: killall -g loolwsd
     restart-condition: always
     daemon: simple
     plugs: [network, network-bind, nextcloud-data, system-observe]
 
   flush-cache:
-    command: loolwsd-cache-flush
+    command: bin/loolwsd-cache-flush
     stop-command: killall loolwsd-service
     restart-condition: always
     daemon: simple
 
   reverse-proxy:
-    command: run-httpd -k start -DFOREGROUND
-    stop-command: run-httpd -k stop
+    command: bin/run-httpd -k start -DFOREGROUND
+    stop-command: bin/run-httpd -k stop
     daemon: simple
     restart-condition: always
     plugs: [network, network-bind]
@@ -63,71 +63,82 @@ parts:
       - libcap2
       - libgcc1
       - libstdc++6
-      - fontconfig
-      - fontconfig-config
-      - fonts-dejavu-core
-      - fonts-freefont-ttf
-      - fonts-guru
-      - fonts-guru-extra
-      - fonts-kacst
-      - fonts-kacst-one
-      - fonts-khmeros-core
-      - fonts-lao
-      - fonts-liberation
-      - fonts-lklug-sinhala
-      - fonts-lohit-guru
-      - fonts-nanum
-      - fonts-noto-cjk
-      - fonts-opensymbol
-      - fonts-sil-abyssinica
-      - fonts-sil-padauk
-      - fonts-stix
-      - fonts-symbola
-      - fonts-takao-pgothic
-      - fonts-thai-tlwg
-      - fonts-tibetan-machine
-      - fonts-tlwg-garuda
-      - fonts-tlwg-garuda-ttf
-      - fonts-tlwg-kinnari
-      - fonts-tlwg-kinnari-ttf       
-      - fonts-tlwg-laksaman
-      - fonts-tlwg-laksaman-ttf                                                                                                      
-      - fonts-tlwg-loma
-      - fonts-tlwg-loma-ttf
-      - fonts-tlwg-mono
-      - fonts-tlwg-mono-ttf
-      - fonts-tlwg-norasi
-      - fonts-tlwg-norasi-ttf
-      - fonts-tlwg-purisa
-      - fonts-tlwg-purisa-ttf
-      - fonts-tlwg-sawasdee
-      - fonts-tlwg-sawasdee-ttf
-      - fonts-tlwg-typewriter
-      - fonts-tlwg-typewriter-ttf
-      - fonts-tlwg-typist
-      - fonts-tlwg-typist-ttf
-      - fonts-tlwg-typo
-      - fonts-tlwg-typo-ttf
-      - fonts-tlwg-umpush
-      - fonts-tlwg-umpush-ttf
-      - fonts-tlwg-waree
-      - fonts-tlwg-waree-ttf
-      - ghostscript
-      - gsfonts
-      - libfont-afm-perl
-      - libfontconfig1
-      - libfontembed1
-      - libfontenc1
-      - libxfont1
-      - ttf-ancient-fonts-symbola
-      - ttf-dejavu-core
-      - ttf-ubuntu-font-family
-      - xfonts-base
-      - xfonts-encodings
-      - xfonts-scalable
-      - xfonts-utils
-    stage:
-      - -etc/fonts/fonts.conf
+      - locales-all
+      - libcairo2
+      - libxcb-dri3-0
+      - libxcb-present0
+      - libxcb-sync1
+      - libxshmfence1
+      - libxdamage1
+      - libxfixes3
+      - libx11-xcb1
+      - libxcb-dri2-0
+      - libdrm2
+    #   - fontconfig
+    #   - fontconfig-config
+    #   - fonts-dejavu-core
+    #   - fonts-freefont-ttf
+    #   - fonts-guru
+    #   - fonts-guru-extra
+    #   - fonts-kacst
+    #   - fonts-kacst-one
+    #   - fonts-khmeros-core
+    #   - fonts-lao
+    #   - fonts-liberation
+    #   - fonts-lklug-sinhala
+    #   - fonts-lohit-guru
+    #   - fonts-nanum
+    #   - fonts-noto-cjk
+    #   - fonts-opensymbol
+    #   - fonts-sil-abyssinica
+    #   - fonts-sil-padauk
+    #   - fonts-stix
+    #   - fonts-symbola
+    #   - fonts-takao-pgothic
+    #   - fonts-thai-tlwg
+    #   - fonts-tibetan-machine
+    #   - fonts-tlwg-garuda
+    #   - fonts-tlwg-garuda-ttf
+    #   - fonts-tlwg-kinnari
+    #   - fonts-tlwg-kinnari-ttf       
+    #   - fonts-tlwg-laksaman
+    #   - fonts-tlwg-laksaman-ttf                                                                                                      
+    #   - fonts-tlwg-loma
+    #   - fonts-tlwg-loma-ttf
+    #   - fonts-tlwg-mono
+    #   - fonts-tlwg-mono-ttf
+    #   - fonts-tlwg-norasi
+    #   - fonts-tlwg-norasi-ttf
+    #   - fonts-tlwg-purisa
+    #   - fonts-tlwg-purisa-ttf
+    #   - fonts-tlwg-sawasdee
+    #   - fonts-tlwg-sawasdee-ttf
+    #   - fonts-tlwg-typewriter
+    #   - fonts-tlwg-typewriter-ttf
+    #   - fonts-tlwg-typist
+    #   - fonts-tlwg-typist-ttf
+    #   - fonts-tlwg-typo
+    #   - fonts-tlwg-typo-ttf
+    #   - fonts-tlwg-umpush
+    #   - fonts-tlwg-umpush-ttf
+    #   - fonts-tlwg-waree
+    #   - fonts-tlwg-waree-ttf
+    #   - ghostscript
+    #   - gsfonts
+    #   - libfont-afm-perl
+    #   - libfontconfig1
+    #   - libfontembed1
+    #   - libfontenc1
+    #   - libxfont1
+    #   - ttf-ancient-fonts-symbola
+    #   - ttf-dejavu-core
+    #   - ttf-ubuntu-font-family
+    #   - xfonts-base
+    #   - xfonts-encodings
+    #   - xfonts-scalable
+    #   - xfonts-utils
+    # stage:
+    #   - -etc/fonts/fonts.conf
 
   systemplate:
     plugin: nil
@@ -135,6 +146,7 @@ parts:
     after: [libreoffice, system-extra-libs]
     stage:
       - systemplate
+      - -systemplate/etc/fonts/fonts.conf
 
   poco:
     plugin: autotools
@@ -170,6 +182,7 @@ parts:
       - libpng12-dev
       - libcap-dev
       - libcppunit-dev
+    stage-packages:
       - libcups2
     prime:
       - -usr/share/doc
