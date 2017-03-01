@@ -13,8 +13,8 @@ else
  	ARCH="$SNAP_ARCH-linux-gnu"
 fi
 
-[ -e $SNAP_DATA/cache/fontconfig  ] 	|| mkdir -p -m 750 $SNAP_DATA/cache/fontconfig
-rm -rf $SNAP_DATA/cache/fontconfig/*
+[ -e $SNAP_COMMON/cache  ] 	|| mkdir -p -m 750 $SNAP_COMMON/cache
+rm -rf $SNAP_COMMON/cache/*
 
 [ -e $SNAP_COMMON/log ]					|| mkdir -p -m 750 $SNAP_COMMON/log
 
@@ -59,6 +59,9 @@ cp -r --preserve=mode $SNAP/opt/collaboraoffice5.1 $SNAP_DATA/opt
 # set explicitly where the fonts config is
 export XLOCALEDIR=$SNAP/usr/share/X11/locale
 export LOCPATH=$LOCPATH:$SNAP/usr/lib/locale
+
+[ -e $SNAP_DATA/cache/fontconfig  ] 	|| mkdir -p -m 750 $SNAP_DATA/cache/fontconfig
+rm -rf $SNAP_DATA/cache/fontconfig/*
 
 # fonts
 sed "s#%FONTS_PLACEHOLDER%#$SNAP_DATA/opt/lool/systemplate/usr/share/fonts#
