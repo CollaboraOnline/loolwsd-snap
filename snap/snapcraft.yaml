@@ -75,7 +75,9 @@ parts:
       - libxcb-dri2-0
       - libdrm2
     stage:
-      - -etc/fonts/fonts.conf
+      - -etc
+      - -usr/bin
+      - -var
 
   systemplate:
     plugin: nil
