@@ -1,5 +1,5 @@
 name: code
-version: '2.0.4'
+version: '2.0.4-1'
 summary: Collabora Online Developer Edition
 description: |
   Offers Office online integration with nextcloud.
@@ -34,7 +34,7 @@ apps:
 plugs:
   nextcloud-data:
     content: nextcloud-documents
-    default-provider: nextcloud-nextant
+    default-provider: nextcloud
     interface: content
     target: nextcloud-data
 
@@ -54,6 +54,19 @@ parts:
       - collaboraofficebasis5.1-impress
       - collaboraofficebasis5.1-writer
       - code-brand
+    filesets:
+      exclude:
+        - -usr/share/doc
+    #     - -opt/collaboraoffice5.1/program/wizards
+    #     - -opt/collaboraoffice5.1/share/xdg
+    #     - -opt/collaboraoffice5.1/CREDITS.fodt
+    #     - -opt/collaboraoffice5.1/EULA.odt
+    #     - -opt/collaboraoffice5.1/LICENSE.fodt
+    #     - -opt/collaboraoffice5.1/LICENSE.html
+    #     - -opt/collaboraoffice5.1/LICENSE
+    #     - -opt/collaboraoffice5.1/NOTICE
+    # stage:
+    #   - $exclude
   
   system-extra-libs:
     plugin: nil
@@ -63,7 +76,7 @@ parts:
       - libcap2
       - libgcc1
       - libstdc++6
-      - locales-all
+      #- locales-all
       - libcairo2
       - libxcb-dri3-0
       - libxcb-present0
@@ -74,18 +87,23 @@ parts:
       - libx11-xcb1
       - libxcb-dri2-0
       - libdrm2
+    filesets:
+      exclude:
+        - -etc
+        - -usr/bin
+        - -usr/share/fonts
+        - -usr/share/doc
+        - -usr/share/man
+        - -var
     stage:
-      - -etc
-      - -usr/bin
-      - -var
+      - $exclude
 
   systemplate:
     plugin: nil
-    prepare: ./src/systemplate/loolwsd-systemplate-set.sh
+    prepare: ./src/systemplate/loolwsd-systemplate-setup.sh
     after: [libreoffice, system-extra-libs]
     stage:
       - systemplate
-      - -systemplate/etc/fonts/fonts.conf
 
   poco:
     plugin: autotools
@@ -123,19 +141,20 @@ parts:
       - libcppunit-dev
     stage-packages:
       - libcups2
-    prime:
-      - -usr/share/doc
+    filesets:
+      exclude:
+        - -usr/share/doc
+        - -usr/bin/loolwsd-systemplate-setup
+        - -etc/gss
+    stage:
+      - $exclude
     after: [poco]
 
   loolwsd-customizations:
     plugin: dump
     source: src/loolwsd
-    organize:
-      conf/fonts.conf: etc/fonts/
     stage:
       - bin
-      - etc
-    after: [system-extra-libs]
 
   apache:
     plugin: apache
@@ -163,15 +182,26 @@ parts:
         - -htdocs
         - -include
         - -build
+        - -logs
         - -conf/httpd.conf
         - -conf/magic
         - -conf/original
         - -conf/extra
         - -bin/apachectl
         - -bin/envvars*
+        - -bin/ab
+        - -bin/apxs
+        - -bin/checkgid
+        - -bin/dbmmanage
+        - -bin/fcgistarter
+        - -bin/htcacheclean
+        - -bin/htdbm
+        - -bin/htdigest
+        - -bin/htpasswd
+        - -bin/httxt2dbm
+        - -bin/logresolve
+        - -bin/rotatelogs
     stage:
-      - $exclude
-    prime:
       - $exclude
 
   apache-customizations:
