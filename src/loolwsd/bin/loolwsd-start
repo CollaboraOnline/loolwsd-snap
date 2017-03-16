@@ -65,7 +65,8 @@ rm -rf $SNAP_DATA/cache/fontconfig/*
 
 # fonts
 sed "/<dir>\/usr\/share\/fonts<\/dir>/i <dir>$SNAP_DATA/opt/lool/systemplate/usr/share/fonts</dir>
-/cachedir>\/var\/cache\/fontconfig<\/cachedir>/i <cachedir>$SNAP_DATA/opt/lool/systemplate/var/cache/fontconfig</cachedir>"  $SNAP_DATA/opt/lool/systemplate/etc/fonts/fonts.conf > /tmp/fonts.conf
+/<include /s#conf.d#$SNAP_DATA/opt/lool/systemplate/etc/fonts/conf.d#
+/cachedir>\/var\/cache\/fontconfig<\/cachedir>/i <cachedir>$SNAP_DATA/opt/lool/systemplate/var/cache/fontconfig</cachedir>" $SNAP_DATA/opt/lool/systemplate/etc/fonts/fonts.conf > /tmp/fonts.conf
 cp -r --preserve=mode /tmp/fonts.conf $SNAP_DATA/opt/lool/systemplate/etc/fonts/fonts.conf
 
 export FONTCONFIG_FILE=$SNAP_DATA/opt/lool/systemplate/etc/fonts/fonts.conf

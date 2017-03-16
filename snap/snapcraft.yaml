@@ -57,16 +57,6 @@ parts:
     filesets:
       exclude:
         - -usr/share/doc
-    #     - -opt/collaboraoffice5.1/program/wizards
-    #     - -opt/collaboraoffice5.1/share/xdg
-    #     - -opt/collaboraoffice5.1/CREDITS.fodt
-    #     - -opt/collaboraoffice5.1/EULA.odt
-    #     - -opt/collaboraoffice5.1/LICENSE.fodt
-    #     - -opt/collaboraoffice5.1/LICENSE.html
-    #     - -opt/collaboraoffice5.1/LICENSE
-    #     - -opt/collaboraoffice5.1/NOTICE
-    # stage:
-    #   - $exclude
   
   system-extra-libs:
     plugin: nil
@@ -76,7 +66,6 @@ parts:
       - libcap2
       - libgcc1
       - libstdc++6
-      #- locales-all
       - libcairo2
       - libxcb-dri3-0
       - libxcb-present0
